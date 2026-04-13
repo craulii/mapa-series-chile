@@ -20,11 +20,11 @@ export const CHILE_BOUNDS: [[number, number], [number, number]] = [
 ]
 
 export const FOG_CONFIG = {
-  color: 'rgb(20, 20, 30)',
-  'high-color': 'rgb(40, 50, 80)',
-  'horizon-blend': 0.03,
-  'space-color': 'rgb(8, 8, 18)',
-  'star-intensity': 0.8,
+  color: 'rgb(10, 15, 30)',
+  'high-color': 'rgb(20, 35, 70)',
+  'horizon-blend': 0.04,
+  'space-color': 'rgb(5, 5, 15)',
+  'star-intensity': 0.6,
 }
 
 export const TERRAIN_CONFIG = {
@@ -39,7 +39,7 @@ export const DEM_SOURCE = {
   maxzoom: 14,
 }
 
-export const MAP_STYLE = 'mapbox://styles/mapbox/outdoors-v12'
+export const MAP_STYLE = 'mapbox://styles/mapbox/dark-v11'
 
 export const CLUSTER_CONFIG = {
   cluster: true,

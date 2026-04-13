@@ -104,9 +104,9 @@ export default function MapInner({ episodes, onEpisodeClick, scrollLat }: MapInn
           ['==', 'maritime', 'false'],
         ],
         paint: {
-          'line-color': '#ffffff',
+          'line-color': '#4a9eff',
           'line-width': 1.5,
-          'line-opacity': 0.4,
+          'line-opacity': 0.5,
         },
       })
 
