@@ -58,11 +58,7 @@ export default function ScrollytellingApp({ episodes }: ScrollytellingAppProps) 
           scrollLat={scrollLat}
         />
         {/* Atmospheric overlays */}
-        <div className="fog-overlay">
-          <div className="fog-layer-1" />
-          <div className="fog-layer-2" />
-          <div className="fog-layer-3" />
-        </div>
+        <div className="fog-overlay" />
         <div className="vignette-overlay" />
       </div>
 
