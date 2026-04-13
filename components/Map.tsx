@@ -1,8 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { forwardRef } from 'react'
-import type { MapHandle, Episode } from './MapInner'
+import type { Episode } from './MapInner'
 
 const MapInner = dynamic(() => import('./MapInner'), {
   ssr: false,
@@ -22,13 +21,12 @@ function MapSkeleton() {
 
 interface MapProps {
   episodes: Episode[]
-  activeEpisodeId: string | null
-  ref?: React.Ref<MapHandle>
+  onEpisodeClick: (episodes: Episode[]) => void
+  scrollLat: number
 }
 
-const MapWrapper = forwardRef<MapHandle, Omit<MapProps, 'ref'>>(function MapWrapper(props, ref) {
-  return <MapInner ref={ref} {...props} />
-})
+export default function MapWrapper(props: MapProps) {
+  return <MapInner {...props} />
+}
 
-export default MapWrapper
-export type { MapHandle, Episode }
+export type { Episode }

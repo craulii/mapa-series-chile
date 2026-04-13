@@ -61,7 +61,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Map scrollytelling */}
+      {/* Scroll-driven map */}
       <div id="map-start">
         <ScrollytellingApp episodes={episodes} />
       </div>

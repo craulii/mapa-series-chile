@@ -55,19 +55,3 @@ body {
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* Episode marker pulse animation */
-@keyframes marker-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5);
-  }
-  70% {
-    box-shadow: 0 0 0 12px rgba(220, 38, 38, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
-  }
-}
-
-.marker-active {
-  animation: marker-pulse 2s infinite;
-}

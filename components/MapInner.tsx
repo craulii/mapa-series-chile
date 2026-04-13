@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback } from 'react'
+import { useRef, useEffect, useCallback } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import {
@@ -10,7 +10,9 @@ import {
   FOG_CONFIG,
   TERRAIN_CONFIG,
   DEM_SOURCE,
-  FLY_TO_DEFAULTS,
+  CHILE_BOUNDS,
+  CLUSTER_CONFIG,
+  FIXED_LNG,
 } from '@/lib/mapbox'
 
 export interface Episode {
@@ -18,61 +20,39 @@ export interface Episode {
   show: string
   showName: string
   title: string
+  season: number
+  episode: number
   city: string
+  region: string
+  address: string
   lat: number
   lng: number
-  mapView: {
-    center: [number, number]
-    zoom: number
-    bearing: number
-    pitch: number
-  }
-}
-
-export interface MapHandle {
-  flyTo: (view: Episode['mapView']) => void
-  flyToOverview: () => void
+  summary: string
+  youtubeUrl: string
+  coverImage: string
 }
 
 interface MapInnerProps {
   episodes: Episode[]
-  activeEpisodeId: string | null
+  onEpisodeClick: (episodes: Episode[]) => void
+  scrollLat: number
 }
 
-const MapInner = forwardRef<MapHandle, MapInnerProps>(function MapInner(
-  { episodes, activeEpisodeId },
-  ref
-) {
+export default function MapInner({ episodes, onEpisodeClick, scrollLat }: MapInnerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
-  const markersRef = useRef<Map<string, mapboxgl.Marker>>(new Map())
+  const episodesRef = useRef(episodes)
+  episodesRef.current = episodes
 
-  const flyTo = useCallback((view: Episode['mapView']) => {
+  const onEpisodeClickRef = useRef(onEpisodeClick)
+  onEpisodeClickRef.current = onEpisodeClick
+
+  // Sync scroll position to map center
+  useEffect(() => {
     const map = mapRef.current
-    if (!map) return
-    map.flyTo({
-      center: view.center,
-      zoom: view.zoom,
-      bearing: view.bearing,
-      pitch: view.pitch,
-      ...FLY_TO_DEFAULTS,
-    })
-  }, [])
-
-  const flyToOverview = useCallback(() => {
-    const map = mapRef.current
-    if (!map) return
-    map.flyTo({
-      center: [-70.6693, -35.0],
-      zoom: 4.5,
-      pitch: 50,
-      bearing: 0,
-      duration: 3000,
-      essential: true,
-    })
-  }, [])
-
-  useImperativeHandle(ref, () => ({ flyTo, flyToOverview }), [flyTo, flyToOverview])
+    if (!map || !map.isStyleLoaded()) return
+    map.setCenter([FIXED_LNG, scrollLat])
+  }, [scrollLat])
 
   // Initialize map
   useEffect(() => {
@@ -83,32 +63,40 @@ const MapInner = forwardRef<MapHandle, MapInnerProps>(function MapInner(
     const map = new mapboxgl.Map({
       container: containerRef.current,
       style: MAP_STYLE,
-      projection: 'globe',
       center: INITIAL_VIEW.center,
       zoom: INITIAL_VIEW.zoom,
       pitch: INITIAL_VIEW.pitch,
       bearing: INITIAL_VIEW.bearing,
+      maxBounds: CHILE_BOUNDS,
+      dragPan: false,
+      dragRotate: false,
+      pitchWithRotate: false,
+      touchPitch: false,
+      touchZoomRotate: true,
+      scrollZoom: false,
+      doubleClickZoom: true,
       antialias: true,
+      maxPitch: 0,
+      minPitch: 0,
     })
+
+    // Disable rotation on touch but keep zoom
+    map.touchZoomRotate.disableRotation()
 
     mapRef.current = map
 
-    map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), 'top-left')
+    map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right')
 
     map.on('style.load', () => {
       map.setFog(FOG_CONFIG as mapboxgl.FogSpecification)
-
       map.addSource('mapbox-dem', DEM_SOURCE)
       map.setTerrain(TERRAIN_CONFIG)
 
-      // Chile border highlight
+      // Chile border
       map.addLayer({
         id: 'chile-border',
         type: 'line',
-        source: {
-          type: 'vector',
-          url: 'mapbox://mapbox.mapbox-streets-v8',
-        },
+        source: { type: 'vector', url: 'mapbox://mapbox.mapbox-streets-v8' },
         'source-layer': 'admin',
         filter: ['all',
           ['==', 'admin_level', 0],
@@ -121,6 +109,140 @@ const MapInner = forwardRef<MapHandle, MapInnerProps>(function MapInner(
           'line-opacity': 0.4,
         },
       })
+
+      // Episode GeoJSON source with clustering
+      const geojson: GeoJSON.FeatureCollection = {
+        type: 'FeatureCollection',
+        features: episodesRef.current.map((ep) => ({
+          type: 'Feature' as const,
+          geometry: { type: 'Point' as const, coordinates: [ep.lng, ep.lat] },
+          properties: {
+            id: ep.id,
+            show: ep.show,
+            showName: ep.showName,
+            title: ep.title,
+            season: ep.season,
+            episode: ep.episode,
+            city: ep.city,
+            region: ep.region,
+            address: ep.address,
+            summary: ep.summary,
+            youtubeUrl: ep.youtubeUrl,
+            coverImage: ep.coverImage,
+          },
+        })),
+      }
+
+      map.addSource('episodes', {
+        type: 'geojson',
+        data: geojson,
+        ...CLUSTER_CONFIG,
+      })
+
+      // Cluster circles
+      map.addLayer({
+        id: 'clusters',
+        type: 'circle',
+        source: 'episodes',
+        filter: ['has', 'point_count'],
+        paint: {
+          'circle-color': [
+            'step', ['get', 'point_count'],
+            '#dc2626',
+            5, '#b91c1c',
+            10, '#991b1b',
+          ],
+          'circle-radius': [
+            'step', ['get', 'point_count'],
+            18,
+            5, 24,
+            10, 30,
+          ],
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#ffffff',
+          'circle-opacity': 0.85,
+        },
+      })
+
+      // Cluster count text
+      map.addLayer({
+        id: 'cluster-count',
+        type: 'symbol',
+        source: 'episodes',
+        filter: ['has', 'point_count'],
+        layout: {
+          'text-field': ['get', 'point_count_abbreviated'],
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': 13,
+        },
+        paint: {
+          'text-color': '#ffffff',
+        },
+      })
+
+      // Unclustered points
+      map.addLayer({
+        id: 'unclustered-point',
+        type: 'circle',
+        source: 'episodes',
+        filter: ['!', ['has', 'point_count']],
+        paint: {
+          'circle-color': [
+            'match', ['get', 'show'],
+            'mea-culpa', '#dc2626',
+            'el-dia-menos-pensado', '#d97706',
+            '#dc2626',
+          ],
+          'circle-radius': 8,
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#ffffff',
+          'circle-opacity': 0.9,
+        },
+      })
+
+      // Click on cluster → show episodes in cluster
+      map.on('click', 'clusters', (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] })
+        if (!features.length) return
+        const props = features[0].properties
+        if (!props) return
+
+        const clusterId = props.cluster_id as number
+        const pointCount = props.point_count as number
+        const source = map.getSource('episodes') as mapboxgl.GeoJSONSource
+
+        source.getClusterLeaves(clusterId, pointCount, 0, (err, leaves) => {
+          if (err || !leaves) return
+          const ids = leaves.map((f) => f.properties?.id).filter(Boolean)
+          const matched = episodesRef.current.filter((ep) => ids.includes(ep.id))
+          onEpisodeClickRef.current(matched)
+        })
+      })
+
+      // Click on individual point
+      map.on('click', 'unclustered-point', (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: ['unclustered-point'] })
+        if (!features.length) return
+        const id = features[0].properties?.id
+        const matched = episodesRef.current.find((ep) => ep.id === id)
+        if (matched) onEpisodeClickRef.current([matched])
+      })
+
+      // Click on empty area → close panel
+      map.on('click', (e) => {
+        const hits = map.queryRenderedFeatures(e.point, {
+          layers: ['clusters', 'unclustered-point'],
+        })
+        if (hits.length === 0) {
+          onEpisodeClickRef.current([])
+        }
+      })
+
+      // Cursor changes
+      map.on('mouseenter', 'clusters', () => { map.getCanvas().style.cursor = 'pointer' })
+      map.on('mouseleave', 'clusters', () => { map.getCanvas().style.cursor = '' })
+      map.on('mouseenter', 'unclustered-point', () => { map.getCanvas().style.cursor = 'pointer' })
+      map.on('mouseleave', 'unclustered-point', () => { map.getCanvas().style.cursor = '' })
     })
 
     return () => {
@@ -128,53 +250,6 @@ const MapInner = forwardRef<MapHandle, MapInnerProps>(function MapInner(
       mapRef.current = null
     }
   }, [])
-
-  // Manage markers
-  useEffect(() => {
-    const map = mapRef.current
-    if (!map) return
-
-    // Clear old markers
-    markersRef.current.forEach((m) => m.remove())
-    markersRef.current.clear()
-
-    episodes.forEach((ep) => {
-      const el = document.createElement('div')
-      el.className = `w-4 h-4 rounded-full border-2 border-white cursor-pointer transition-all duration-300 ${
-        ep.id === activeEpisodeId
-          ? 'bg-accent-red scale-150 marker-active'
-          : ep.show === 'mea-culpa'
-            ? 'bg-red-600/70'
-            : 'bg-amber-600/70'
-      }`
-      el.style.cssText = `
-        width: ${ep.id === activeEpisodeId ? '20px' : '14px'};
-        height: ${ep.id === activeEpisodeId ? '20px' : '14px'};
-        border-radius: 50%;
-        border: 2px solid white;
-        background: ${
-          ep.id === activeEpisodeId
-            ? '#dc2626'
-            : ep.show === 'mea-culpa'
-              ? 'rgba(220,38,38,0.7)'
-              : 'rgba(217,119,6,0.7)'
-        };
-        cursor: pointer;
-        transition: all 0.3s ease;
-        ${ep.id === activeEpisodeId ? 'animation: marker-pulse 2s infinite;' : ''}
-      `
-
-      const marker = new mapboxgl.Marker({ element: el })
-        .setLngLat([ep.lng, ep.lat])
-        .setPopup(
-          new mapboxgl.Popup({ offset: 15, closeButton: false })
-            .setHTML(`<div style="color:#000;font-weight:600;font-size:13px">${ep.title}</div><div style="color:#666;font-size:11px">${ep.city}</div>`)
-        )
-        .addTo(map)
-
-      markersRef.current.set(ep.id, marker)
-    })
-  }, [episodes, activeEpisodeId])
 
   if (!MAPBOX_TOKEN) {
     return (
@@ -185,6 +260,4 @@ const MapInner = forwardRef<MapHandle, MapInnerProps>(function MapInner(
   }
 
   return <div ref={containerRef} className="w-full h-full" />
-})
-
-export default MapInner
+}
