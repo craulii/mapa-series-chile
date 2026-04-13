@@ -55,3 +55,57 @@ body {
   background: rgba(255, 255, 255, 0.3);
 }
 
+/* Fog overlay effect — animated mist over the map */
+.fog-overlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.fog-overlay::before,
+.fog-overlay::after {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  opacity: 0.06;
+  background:
+    radial-gradient(ellipse 600px 300px at 30% 50%, rgba(100, 140, 200, 0.5), transparent),
+    radial-gradient(ellipse 500px 250px at 70% 40%, rgba(80, 120, 180, 0.4), transparent),
+    radial-gradient(ellipse 400px 200px at 50% 70%, rgba(60, 100, 160, 0.3), transparent);
+  animation: fog-drift 30s ease-in-out infinite alternate;
+}
+
+.fog-overlay::after {
+  opacity: 0.04;
+  animation: fog-drift-reverse 25s ease-in-out infinite alternate;
+  background:
+    radial-gradient(ellipse 500px 350px at 60% 30%, rgba(120, 150, 210, 0.4), transparent),
+    radial-gradient(ellipse 600px 200px at 20% 60%, rgba(90, 130, 190, 0.3), transparent);
+}
+
+@keyframes fog-drift {
+  0% { transform: translate(0%, 0%) rotate(0deg); }
+  50% { transform: translate(5%, 3%) rotate(1deg); }
+  100% { transform: translate(-3%, 5%) rotate(-1deg); }
+}
+
+@keyframes fog-drift-reverse {
+  0% { transform: translate(0%, 0%) rotate(0deg); }
+  50% { transform: translate(-4%, 5%) rotate(-1deg); }
+  100% { transform: translate(6%, -3%) rotate(1deg); }
+}
+
+/* Vignette edges — darkened borders for cinematic feel */
+.vignette-overlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(5, 5, 12, 0.6) 100%);
+}
+
