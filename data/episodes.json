@@ -1,0 +1,178 @@
+[
+  {
+    "id": "mc-arica-01",
+    "show": "mea-culpa",
+    "showName": "Mea Culpa",
+    "title": "El Silencio del Desierto",
+    "season": 3,
+    "episode": 7,
+    "city": "Arica",
+    "region": "Arica y Parinacota",
+    "address": "Calle 21 de Mayo 350, Arica",
+    "lat": -18.4783,
+    "lng": -70.3126,
+    "summary": "Un comerciante de la zona franca de Arica desaparece misteriosamente tras una transaccion millonaria. Su esposa descubre una doble vida que lo conecta con redes de contrabando en la frontera con Peru.",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "coverImage": "/covers/mc-arica-01.jpg",
+    "mapView": {
+      "center": [-70.3126, -18.4783],
+      "zoom": 15,
+      "bearing": 20,
+      "pitch": 60
+    }
+  },
+  {
+    "id": "edmp-antofagasta-01",
+    "show": "el-dia-menos-pensado",
+    "showName": "El Dia Menos Pensado",
+    "title": "Cenizas en el Salar",
+    "season": 1,
+    "episode": 3,
+    "city": "Antofagasta",
+    "region": "Antofagasta",
+    "address": "Avenida Brasil 2950, Antofagasta",
+    "lat": -23.6509,
+    "lng": -70.3975,
+    "summary": "Un ingeniero minero es encontrado sin vida en las cercanias del Salar de Atacama. La investigacion revela conflictos laborales y amenazas vinculadas a la explotacion ilegal de litio en la region.",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "coverImage": "/covers/edmp-antofagasta-01.jpg",
+    "mapView": {
+      "center": [-70.3975, -23.6509],
+      "zoom": 14.5,
+      "bearing": -10,
+      "pitch": 60
+    }
+  },
+  {
+    "id": "mc-laserena-01",
+    "show": "mea-culpa",
+    "showName": "Mea Culpa",
+    "title": "Marejada Roja",
+    "season": 5,
+    "episode": 2,
+    "city": "La Serena",
+    "region": "Coquimbo",
+    "address": "Avenida del Mar 1200, La Serena",
+    "lat": -29.9027,
+    "lng": -71.2519,
+    "summary": "Una profesora de biologia marina aparece muerta en la playa de La Serena. Las pistas conducen a un conflicto con pescadores artesanales que se oponian a un proyecto inmobiliario en la costa.",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "coverImage": "/covers/mc-laserena-01.jpg",
+    "mapView": {
+      "center": [-71.2519, -29.9027],
+      "zoom": 15,
+      "bearing": 45,
+      "pitch": 55
+    }
+  },
+  {
+    "id": "edmp-valparaiso-01",
+    "show": "el-dia-menos-pensado",
+    "showName": "El Dia Menos Pensado",
+    "title": "El Ascensor del Cerro Alegre",
+    "season": 2,
+    "episode": 1,
+    "city": "Valparaiso",
+    "region": "Valparaiso",
+    "address": "Paseo Yugoslavo, Cerro Alegre, Valparaiso",
+    "lat": -33.0442,
+    "lng": -71.6252,
+    "summary": "Un turista extranjero es hallado inconsciente al pie del ascensor del Cerro Alegre. Lo que parece un accidente se transforma en un caso de espionaje internacional con ramificaciones en el puerto.",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "coverImage": "/covers/edmp-valparaiso-01.jpg",
+    "mapView": {
+      "center": [-71.6252, -33.0442],
+      "zoom": 16,
+      "bearing": -30,
+      "pitch": 65
+    }
+  },
+  {
+    "id": "mc-santiago-01",
+    "show": "mea-culpa",
+    "showName": "Mea Culpa",
+    "title": "Sombras en La Moneda",
+    "season": 8,
+    "episode": 5,
+    "city": "Santiago Centro",
+    "region": "Metropolitana",
+    "address": "Calle Monjitas 525, Santiago Centro",
+    "lat": -33.4372,
+    "lng": -70.6506,
+    "summary": "Un abogado vinculado al poder politico es encontrado muerto en su oficina del centro de Santiago. La investigacion destapa una red de corrupcion que conecta al mundo judicial con el narcotrafico.",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "coverImage": "/covers/mc-santiago-01.jpg",
+    "mapView": {
+      "center": [-70.6506, -33.4372],
+      "zoom": 15.5,
+      "bearing": 0,
+      "pitch": 60
+    }
+  },
+  {
+    "id": "edmp-lapintana-01",
+    "show": "el-dia-menos-pensado",
+    "showName": "El Dia Menos Pensado",
+    "title": "La Ultima Micro",
+    "season": 1,
+    "episode": 8,
+    "city": "La Pintana",
+    "region": "Metropolitana",
+    "address": "Avenida Santa Rosa 12800, La Pintana",
+    "lat": -33.5831,
+    "lng": -70.6346,
+    "summary": "Un conductor del Transantiago desaparece junto con su bus en una noche de invierno. Los pasajeros son encontrados ilesos, pero el chofer nunca mas aparece. Su familia sospecha de una venganza.",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "coverImage": "/covers/edmp-lapintana-01.jpg",
+    "mapView": {
+      "center": [-70.6346, -33.5831],
+      "zoom": 14,
+      "bearing": 15,
+      "pitch": 55
+    }
+  },
+  {
+    "id": "mc-concepcion-01",
+    "show": "mea-culpa",
+    "showName": "Mea Culpa",
+    "title": "El Rio No Olvida",
+    "season": 6,
+    "episode": 4,
+    "city": "Concepcion",
+    "region": "Biobio",
+    "address": "Calle Barros Arana 890, Concepcion",
+    "lat": -36.8270,
+    "lng": -73.0503,
+    "summary": "Una estudiante universitaria es encontrada a orillas del rio Biobio. La investigacion revela una trama de acoso sistematico dentro de una prestigiosa facultad de la Universidad de Concepcion.",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "coverImage": "/covers/mc-concepcion-01.jpg",
+    "mapView": {
+      "center": [-73.0503, -36.8270],
+      "zoom": 15,
+      "bearing": -20,
+      "pitch": 60
+    }
+  },
+  {
+    "id": "edmp-puntaarenas-01",
+    "show": "el-dia-menos-pensado",
+    "showName": "El Dia Menos Pensado",
+    "title": "Viento del Fin del Mundo",
+    "season": 2,
+    "episode": 6,
+    "city": "Punta Arenas",
+    "region": "Magallanes",
+    "address": "Costanera del Estrecho, Punta Arenas",
+    "lat": -53.1548,
+    "lng": -70.9113,
+    "summary": "Un cientifico de la Antartica es hallado congelado en la costanera de Punta Arenas dias despues de regresar de una expedicion. Sus colegas ocultan un descubrimiento que podria cambiar la geopolitica regional.",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "coverImage": "/covers/edmp-puntaarenas-01.jpg",
+    "mapView": {
+      "center": [-70.9113, -53.1548],
+      "zoom": 14.5,
+      "bearing": 10,
+      "pitch": 55
+    }
+  }
+]
