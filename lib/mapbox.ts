@@ -10,7 +10,7 @@ export const SCROLL_LAT_RANGE = {
 export const INITIAL_VIEW = {
   center: [FIXED_LNG, -35.5] as [number, number],
   zoom: 5.5,
-  pitch: 0,
+  pitch: 30,
   bearing: 0,
 }
 
@@ -20,11 +20,12 @@ export const CHILE_BOUNDS: [[number, number], [number, number]] = [
 ]
 
 export const FOG_CONFIG = {
-  color: 'rgb(10, 15, 30)',
-  'high-color': 'rgb(20, 35, 70)',
-  'horizon-blend': 0.04,
-  'space-color': 'rgb(5, 5, 15)',
-  'star-intensity': 0.6,
+  color: 'rgb(12, 15, 28)',
+  'high-color': 'rgb(18, 30, 55)',
+  'horizon-blend': 0.08,
+  'space-color': 'rgb(5, 5, 12)',
+  'star-intensity': 0.4,
+  range: [0.5, 12] as [number, number],
 }
 
 export const TERRAIN_CONFIG = {
