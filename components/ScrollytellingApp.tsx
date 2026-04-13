@@ -57,9 +57,6 @@ export default function ScrollytellingApp({ episodes }: ScrollytellingAppProps) 
           onEpisodeClick={handleEpisodeClick}
           scrollLat={scrollLat}
         />
-        {/* Atmospheric overlays */}
-        <div className="fog-overlay" />
-        <div className="vignette-overlay" />
       </div>
 
       {/* Vertical progress bar — right side */}

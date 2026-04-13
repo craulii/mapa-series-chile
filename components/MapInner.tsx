@@ -76,8 +76,8 @@ export default function MapInner({ episodes, onEpisodeClick, scrollLat }: MapInn
       scrollZoom: false,
       doubleClickZoom: true,
       antialias: true,
-      maxPitch: 30,
-      minPitch: 30,
+      maxPitch: 0,
+      minPitch: 0,
     })
 
     // Disable rotation on touch but keep zoom
